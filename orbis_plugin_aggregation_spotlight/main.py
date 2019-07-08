@@ -1,11 +1,13 @@
+# -*- coding: utf-8 -*-
+
 import spotlight
 
-from orbis import app
-import orbis_plugin_aggregation_dbpedia_entity_types as dbpedia_entity_types
-from orbis.core.aggregation import AggregationBaseClass
+from orbis_eval import app
+from orbis_plugin_aggregation_dbpedia_entity_types import Main as dbpedia_entity_types
+from orbis_eval.core.aggregation import AggregationBaseClass
 
 
-class SpotlightAggregator(AggregationBaseClass):
+class Main(AggregationBaseClass):
 
     def query(self, text, item):
         client = 'http://model.dbpedia-spotlight.org/de/annotate'
