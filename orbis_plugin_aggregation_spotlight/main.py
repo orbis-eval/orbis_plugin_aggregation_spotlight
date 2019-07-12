@@ -9,13 +9,14 @@ from orbis_eval.core.aggregation import AggregationBaseClass
 
 class Main(AggregationBaseClass):
 
-    def query(self, text, item):
+    def query(self, item):
         client = 'http://model.dbpedia-spotlight.org/de/annotate'
         only_pol_filter = {
             'policy': 'whitelist',
             'types': 'DBpedia:Person, DBpedia:Place, DBpedia:Location, DBpedia:Organisation, Http://xmlns.com/foaf/0.1/Person',
             'coreferenceResolution': True
         }
+        text = item['corpus']
         try:
             response = spotlight.annotate(client, text=text, filters=only_pol_filter)
         except Exception as exception:
