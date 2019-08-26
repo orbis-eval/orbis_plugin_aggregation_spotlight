@@ -10,7 +10,8 @@ from orbis_eval.core.base import AggregationBaseClass
 class Main(AggregationBaseClass):
 
     def query(self, item):
-        client = 'http://model.dbpedia-spotlight.org/de/annotate'
+
+        client = f"http://model.dbpedia-spotlight.org/{self.config['aggregation']['service']['language']}/annotate"
         only_pol_filter = {
             'policy': 'whitelist',
             'types': 'DBpedia:Person, DBpedia:Place, DBpedia:Location, DBpedia:Organisation, Http://xmlns.com/foaf/0.1/Person',
