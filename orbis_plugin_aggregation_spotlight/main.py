@@ -7,6 +7,10 @@ from orbis_plugin_aggregation_dbpedia_entity_types import Main as dbpedia_entity
 from orbis_eval.core.base import AggregationBaseClass
 
 
+import logging
+logger = logging.getLogger(__name__)
+
+
 class Main(AggregationBaseClass):
 
     def query(self, item):
@@ -21,20 +25,25 @@ class Main(AggregationBaseClass):
         try:
             response = spotlight.annotate(client, text=text, filters=only_pol_filter)
         except Exception as exception:
-            app.logger.error(f"Query failed: {exception}")
+            logger.error(f"Query failed: {exception}")
             response = None
         return response
 
     def map_entities(self, response, item):
         entities = []
-        for idx, item in enumerate(response):
-            item["key"] = item["URI"]
-            item["key"] = item["key"].replace("http://en.wikipedia.org/wiki/", "http://dbpedia.org/resource/")
-            item["key"] = item["key"].replace("http://de.dbpedia.org/resource/", "http://dbpedia.org/resource/")
-            item = self.get_type(item)
-            item["document_start"] = int(item["offset"])
-            item["document_end"] = int(item["offset"]) + len(item["surfaceForm"])
-            entities.append(item)
+
+        if not response:
+            return None
+
+        if response:
+            for idx, item in enumerate(response):
+                item["key"] = item["URI"]
+                item["key"] = item["key"].replace("http://en.wikipedia.org/wiki/", "http://dbpedia.org/resource/")
+                item["key"] = item["key"].replace("http://de.dbpedia.org/resource/", "http://dbpedia.org/resource/")
+                item = self.get_type(item)
+                item["document_start"] = int(item["offset"])
+                item["document_end"] = int(item["offset"]) + len(item["surfaceForm"])
+                entities.append(item)
         return entities
 
     def get_type(self, item):
@@ -42,6 +51,7 @@ class Main(AggregationBaseClass):
         persons = ['http://xmlns.com/foaf/0.1/person', 'person']
         orgs = ["organisation"]
         item["entity_type"] = "NoType"
+
         for place in places:
             if place in item["types"].lower():
                 item["entity_type"] = dbpedia_entity_types.normalize_entity_type("location")
