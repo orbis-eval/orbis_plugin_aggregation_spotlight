@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 
 import spotlight
+import time
 
-from orbis_eval import app
+
+from orbis_eval.core import app
 from orbis_plugin_aggregation_dbpedia_entity_types import Main as dbpedia_entity_types
 from orbis_eval.core.base import AggregationBaseClass
 
@@ -15,13 +17,20 @@ class Main(AggregationBaseClass):
 
     def query(self, item):
 
-        client = f"http://model.dbpedia-spotlight.org/{self.config['aggregation']['service']['language']}/annotate"
+        # old url:
+        # client = f"http://model.dbpedia-spotlight.org/{self.config['aggregation']['service']['language']}/annotate"
+
+        # new url:
+        client = f"https://api.dbpedia-spotlight.org/{self.config['aggregation']['service']['language']}/annotate"
+
         only_pol_filter = {
             'policy': 'whitelist',
             'types': 'DBpedia:Person, DBpedia:Place, DBpedia:Location, DBpedia:Organisation, Http://xmlns.com/foaf/0.1/Person',
             'coreferenceResolution': True
         }
         text = item['corpus']
+
+        time.sleep(2)
         try:
             response = spotlight.annotate(client, text=text, filters=only_pol_filter)
         except Exception as exception:
