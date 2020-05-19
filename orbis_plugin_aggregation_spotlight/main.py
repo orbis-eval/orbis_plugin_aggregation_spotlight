@@ -59,7 +59,7 @@ class Main(AggregationBaseClass):
         places = ["place", "location", "settlement"]
         persons = ['http://xmlns.com/foaf/0.1/person', 'person']
         orgs = ["organisation"]
-        item["entity_type"] = "NoType"
+        item["entity_type"] = "undefined"
 
         for place in places:
             if place in item["types"].lower():
