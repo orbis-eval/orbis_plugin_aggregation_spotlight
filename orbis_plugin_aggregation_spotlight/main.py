@@ -5,7 +5,7 @@ import time
 
 
 from orbis_eval.core import app
-from orbis_plugin_aggregation_dbpedia_entity_types import Main as dbpedia_entity_types
+from orbis_eval.plugins.orbis_plugin_aggregation_dbpedia_entity_types import Main as dbpedia_entity_types
 from orbis_eval.core.base import AggregationBaseClass
 
 
